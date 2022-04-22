@@ -1,0 +1,17 @@
+name: CustomItems
+version: '${project.version}'
+main: lmaxplay.customitems.CustomItems
+api-version: 1.18
+
+commands:
+  customitem:
+    description: "Creates a custom item"
+    usage: /customitem <item>
+    aliases: [customitem]
+    permission: customitems.customitem
+    default: true
+
+permissions:
+  betteritems.customitem:
+    description: "Allows the user to create custom items"
+    default: true
