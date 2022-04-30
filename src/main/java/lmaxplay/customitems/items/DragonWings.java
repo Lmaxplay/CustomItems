@@ -19,7 +19,7 @@ import java.util.UUID;
 public class DragonWings implements CustomItem {
     @Override
     public String getName() {
-        return "§8Dragon Wings";
+        return "§6Dragon Wings";
     }
 
     @Override
