@@ -1,5 +1,6 @@
 package lmaxplay.customitems;
 
+import lmaxplay.customitems.helpers.ItemDrops;
 import org.bukkit.event.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.*;
 import com.destroystokyo.paper.event.player.*;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class Listener implements org.bukkit.event.Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -30,49 +32,49 @@ public class Listener implements org.bukkit.event.Listener {
         /*if (!(event.getEntity() instanceof LivingEntity)) {
         //    return;
         }*/
-        LivingEntity entity = (LivingEntity) event.getEntity();
-        if(event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
+        if(event.getEntity() instanceof LivingEntity) {
+            LivingEntity entity = (LivingEntity) event.getEntity();
+            if (event.getDamager() instanceof Player) {
+                Player player = (Player) event.getDamager();
 
-            if(player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
 
 
-                List<String> lore = player.getInventory().getItemInMainHand().getItemMeta().getLore();
+                    List<String> lore = player.getInventory().getItemInMainHand().getItemMeta().getLore();
 
-                if (lore == null) {
-                    lore = new ArrayList<String>();
-                }
-
-                for (String line : lore) {
-                    if (line.contains("Strength ")) {
-                        String[] split = line.split(" ");
-                        try {
-                            // Parse roman numeral using standard library
-                            Double strength = RomanNumeral.parseDouble(split[1]);
-                            if (strength != null) {
-                                event.setDamage(event.getDamage() * (1 + (strength / 10)));
-                            }
-                        } catch (NumberFormatException e) {
-                            continue;
-                        }
+                    if (lore == null) {
+                        lore = new ArrayList<String>();
                     }
-                    for (Rarity rarity : Rarity.values()) {
-                        if (line.contains(rarity.getName().toUpperCase() + " ")) {
-                            event.setDamage(event.getDamage() * rarity.getMultiplier());
+
+                    for (String line : lore) {
+                        if (line.contains("Strength ")) {
+                            String[] split = line.split(" ");
+                            try {
+                                // Parse roman numeral using standard library
+                                Double strength = RomanNumeral.parseDouble(split[1]);
+                                if (strength != null) {
+                                    event.setDamage(event.getDamage() * (1 + (strength / 10)));
+                                }
+                            } catch (NumberFormatException e) {
+                                continue;
+                            }
+                        }
+                        for (Rarity rarity : Rarity.values()) {
+                            if (line.contains(rarity.getName().toUpperCase() + " ")) {
+                                event.setDamage(event.getDamage() * rarity.getMultiplier());
+                            }
                         }
                     }
                 }
             }
         }
-        if(event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            double multiplier = 0, cost = 0;
+            double multiplier = 0, cost = 4;
 
             for (ItemStack armor : player.getInventory().getArmorContents()) {
                 if (armor == null) continue;
-
                 multiplier += Rarity.getRarity(armor).getMultiplier();
-                cost++;
             }
 
             event.setDamage(event.getDamage() / (1 + (multiplier - cost) / 4));
@@ -139,10 +141,13 @@ public class Listener implements org.bukkit.event.Listener {
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             List<String> lore = event.getItem().getItemMeta().getLore();
             CustomItem item = ItemManager.getItem(event.getItem().getItemMeta().getDisplayName());
-            if(!item.hasAbility()) return;
             if(item != null) {
-                item.use(event.getItem(), player);
-                event.setCancelled(true);
+                if (item.hasAbility()) {
+                    item.use(event.getItem(), player);
+                    if(!(event.getItem().getType().equals(Material.BOW)  || event.getItem().getType().equals(Material.CROSSBOW) || event.getItem().getType().equals(Material.FISHING_ROD) || event.getItem().getType().equals(Material.SHIELD))) {
+                        event.setCancelled(true);
+                    }
+                }
             }
         }
 
@@ -155,6 +160,49 @@ public class Listener implements org.bukkit.event.Listener {
 
         if(!event.getFuel().getItemMeta().getDisplayName().equals("")) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority=EventPriority.HIGHEST)
+    public void onBowShot(EntityShootBowEvent event) {
+        if(event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            ItemStack item = event.getBow();
+            if(Objects.requireNonNull(event.getBow()).getItemMeta() == null) return;
+            if(event.getBow().getItemMeta().getDisplayName().equals("")) return;
+            if(event.getProjectile() instanceof Arrow) {
+                Arrow arrow = (Arrow) event.getProjectile();
+                arrow.setDamage(arrow.getDamage() * Rarity.getRarity(item).getMultiplier());
+            }
+
+            CustomItem customItem = ItemManager.getItem(event.getBow().getItemMeta().getDisplayName());
+            if(customItem != null) {
+                if(customItem.hasAbility()) {
+                    customItem.shoot(event.getBow(), event.getProjectile(), player);
+                }
+            }
+            event.setCancelled(false);
+        }
+    }
+    // Entity death
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEntityDeath(EntityDeathEvent event) {
+        if(event.getEntity() instanceof Player) return;
+        ItemDrops.drop(event.getEntity().getType(), event);
+    }
+
+    // On player crouch
+    @EventHandler
+    public void onPlayerCrouch(PlayerToggleSneakEvent event) {
+        if(event.getPlayer().isSneaking()) {
+            for (ItemStack item : event.getPlayer().getInventory().getArmorContents()) {
+                CustomItem customItem = ItemManager.getItem(item.getItemMeta().getDisplayName());
+                if (customItem != null) {
+                    if (customItem.hasAbility()) {
+                        customItem.crouch(item, event.getPlayer());
+                    }
+                }
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ import lmaxplay.customitems.Mana;
 import lmaxplay.customitems.Rarity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -78,5 +79,25 @@ public class LaunchWand implements lmaxplay.customitems.CustomItem {
         } else {
             player.sendMessage(ChatColor.RED + "You do not have enough mana!");
         }
+    }
+
+    @Override
+    public void shoot(ItemStack itemStack, Entity projectile, Player player) {
+
+    }
+
+    @Override
+    public void eat(ItemStack itemStack, Player player) {
+
+    }
+
+    @Override
+    public void attack(ItemStack itemStack, Player player, Entity target) {
+
+    }
+
+    @Override
+    public void crouch(ItemStack itemStack, Player player) {
+
     }
 }

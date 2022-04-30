@@ -2,6 +2,7 @@ name: CustomItems
 version: '${project.version}'
 main: lmaxplay.customitems.CustomItems
 api-version: 1.18
+description: '${project.description}'
 
 commands:
   customitem:

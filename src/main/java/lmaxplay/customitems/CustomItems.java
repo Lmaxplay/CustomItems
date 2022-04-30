@@ -1,6 +1,7 @@
 package lmaxplay.customitems;
 
 import lmaxplay.customitems.commands.ItemGiveCommand;
+import lmaxplay.customitems.helpers.ItemDrops;
 import lmaxplay.customitems.items.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,6 +32,10 @@ public final class CustomItems extends JavaPlugin {
         ItemManager.register(new HealWand());
         ItemManager.register(new BoneSword());
         ItemManager.register(new BoneSwordRefined());
+        ItemManager.register(new IronGolemSword());
+        ItemManager.register(new ManaBow());
+        ItemManager.register(new ObsidianPickaxe());
+        ItemManager.register(new DragonWings());
     }
 
     @Override

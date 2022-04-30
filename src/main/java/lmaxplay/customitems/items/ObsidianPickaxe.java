@@ -1,47 +1,47 @@
 package lmaxplay.customitems.items;
 
-import lmaxplay.customitems.CustomItem;
-import lmaxplay.customitems.ItemType;
-import lmaxplay.customitems.Mana;
-import lmaxplay.customitems.Rarity;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
+import lmaxplay.customitems.*;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.*;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-public class BoneSwordRefined implements CustomItem {
-
+public class ObsidianPickaxe implements CustomItem {
     @Override
     public String getName() {
-        return "§6Refined Bone Sword";
+        return "§6Obsidian Pickaxe";
     }
 
     @Override
     public List<String> getLore() {
         String[] lore = new String[] {
-                "§7A sword made of bones,",
-                "§7refined to an incredible level.",
-                "§6§lLEGENDARY WEAPON"
+                "§7A pickaxe made of",
+                "§7compressed obsidian.",
+                "§7Ability: §6Haste II",
+                "§7Mana cost: §610",
+                "§7Gives you a §6Haste II §7buff for §610 §7seconds.",
+                "§6§lLEGENDARY PICKAXE"
         };
         return Arrays.asList(lore);
     }
 
     @Override
     public String getId() {
-        return "BONE_SWORD_REFINED";
+        return "OBSIDIAN_PICKAXE";
     }
 
     @Override
-    @NotNull
-    public Boolean hasAbility() {
+    public @NotNull Boolean hasAbility() {
         return true;
     }
 
@@ -52,26 +52,27 @@ public class BoneSwordRefined implements CustomItem {
 
     @Override
     public ItemType getType() {
-        return ItemType.Weapon;
+        return ItemType.Pickaxe;
     }
 
     @Override
     public ItemStack createItemStack() {
-        ItemStack itemStack = new ItemStack(org.bukkit.Material.BONE);
+        ItemStack itemStack = new ItemStack(Material.NETHERITE_PICKAXE);
         ItemMeta meta = itemStack.getItemMeta();
         assert meta != null;
         meta.setDisplayName(getName());
         meta.setLore(getLore());
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 16.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         itemStack.setItemMeta(meta);
+        itemStack.addUnsafeEnchantment(Enchantment.DIG_SPEED, 10);
+        itemStack.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 10);
         return itemStack;
     }
 
     @Override
     public void use(ItemStack itemStack, Player player) {
-        // 30 mana cost
-        if(Mana.getMana(player) >= 30) {
-            Mana.removeMana(player, 30);
+        if(Mana.getMana(player) >= 10) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 20 * 10, 1));
+            Mana.removeMana(player, 10);
         }
     }
 
@@ -94,4 +95,6 @@ public class BoneSwordRefined implements CustomItem {
     public void crouch(ItemStack itemStack, Player player) {
 
     }
+
+
 }

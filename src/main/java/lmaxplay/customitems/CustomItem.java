@@ -1,5 +1,6 @@
 package lmaxplay.customitems;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -47,4 +48,24 @@ public interface CustomItem {
      * Uses the ability of the item
      */
     void use(ItemStack itemStack, Player player);
+
+    /**
+     * On item shoot
+     */
+    void shoot(ItemStack itemStack, Entity projectile, Player player);
+
+    /**
+     * On eating the item
+     */
+    void eat(ItemStack itemStack, Player player);
+
+    /**
+     * On item attack
+     */
+    void attack(ItemStack itemStack, Player player, Entity target);
+
+    /**
+     * On item crouch
+     */
+    void crouch(ItemStack itemStack, Player player);
 }

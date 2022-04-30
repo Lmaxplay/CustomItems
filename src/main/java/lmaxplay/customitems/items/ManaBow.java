@@ -6,6 +6,7 @@ import lmaxplay.customitems.Mana;
 import lmaxplay.customitems.Rarity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -17,67 +18,73 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class BoneSwordRefined implements CustomItem {
+public class ManaBow implements CustomItem {
 
     @Override
     public String getName() {
-        return "§6Refined Bone Sword";
+        return "§5Mana Bow";
     }
 
     @Override
     public List<String> getLore() {
         String[] lore = new String[] {
-                "§7A sword made of bones,",
-                "§7refined to an incredible level.",
-                "§6§lLEGENDARY WEAPON"
+                "§7A bow made using pure mana.",
+                "§7Ability: §6Mana Arrow",
+                "§7Mana cost: §6100",
+                "§7Uses up to §6100§7 mana per shot to increase damage.",
+                "§7If 100 mana is used, the arrow will always be a critical hit.",
+                "§5§lEPIC BOW"
         };
         return Arrays.asList(lore);
     }
 
     @Override
     public String getId() {
-        return "BONE_SWORD_REFINED";
+        return "MANA_BOW";
     }
 
     @Override
-    @NotNull
-    public Boolean hasAbility() {
+    public @NotNull Boolean hasAbility() {
         return true;
     }
 
     @Override
     public Rarity getRarity() {
-        return Rarity.Legendary;
+        return Rarity.Rare;
     }
 
     @Override
     public ItemType getType() {
-        return ItemType.Weapon;
+        return null;
     }
 
     @Override
     public ItemStack createItemStack() {
-        ItemStack itemStack = new ItemStack(org.bukkit.Material.BONE);
+        ItemStack itemStack = new ItemStack(org.bukkit.Material.BOW);
         ItemMeta meta = itemStack.getItemMeta();
         assert meta != null;
         meta.setDisplayName(getName());
         meta.setLore(getLore());
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 16.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         itemStack.setItemMeta(meta);
         return itemStack;
     }
 
     @Override
-    public void use(ItemStack itemStack, Player player) {
-        // 30 mana cost
-        if(Mana.getMana(player) >= 30) {
-            Mana.removeMana(player, 30);
-        }
-    }
+    public void use(ItemStack itemStack, Player player) {}
 
     @Override
     public void shoot(ItemStack itemStack, Entity projectile, Player player) {
+        if(projectile instanceof Arrow) {
+            if(Mana.getMana(player) >= 1) {
+                Arrow arrow = (Arrow) projectile;
+                //arrow.setDamage(arrow.getDamage() + (player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue() * (1 + (Math.min(Mana.getMana(player), 100) / 100))));
+                if(Mana.getMana(player) >= 100) {
+                    //arrow.setCritical(true);
+                }
 
+                Mana.removeMana(player, Math.min(Mana.getMana(player), 100));
+            }
+        }
     }
 
     @Override

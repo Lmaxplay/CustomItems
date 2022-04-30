@@ -5,10 +5,12 @@ import lmaxplay.customitems.ItemType;
 import lmaxplay.customitems.Rarity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +38,7 @@ public class BoneSword implements CustomItem {
     }
 
     @Override
+    @NotNull
     public Boolean hasAbility() {
         return false;
     }
@@ -58,12 +61,31 @@ public class BoneSword implements CustomItem {
         meta.setDisplayName(getName());
         meta.setLore(getLore());
         meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 10.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", 2.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         itemStack.setItemMeta(meta);
         return itemStack;
     }
 
     @Override
     public void use(ItemStack itemStack, Player player) {
+    }
+
+    @Override
+    public void shoot(ItemStack itemStack, Entity projectile, Player player) {
+
+    }
+
+    @Override
+    public void eat(ItemStack itemStack, Player player) {
+
+    }
+
+    @Override
+    public void attack(ItemStack itemStack, Player player, Entity target) {
+
+    }
+
+    @Override
+    public void crouch(ItemStack itemStack, Player player) {
+
     }
 }

@@ -6,9 +6,12 @@ import lmaxplay.customitems.Mana;
 import lmaxplay.customitems.Rarity;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -16,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class HealWand implements CustomItem {
-
 
     @Override
     public String getName() {
@@ -27,6 +29,7 @@ public class HealWand implements CustomItem {
     public List<String> getLore() {
         String[] lore = new String[] {
                 "§7Right click to heal yourself",
+                "§7This will apply a regeneration effect",
                 "§7Cost: §670 mana",
                 "§9§lRARE WAND"
         };
@@ -67,11 +70,31 @@ public class HealWand implements CustomItem {
 
     @Override
     public void use(ItemStack itemStack, Player player) {
-        if(Mana.getMana(player) > 70) {
-            player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue());
+        if(Mana.getMana(player) > 70 && Mana.getMana(player) > 0) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10, 3));
             Mana.removeMana(player, 70);
         } else {
             player.sendMessage(ChatColor.RED + "You do not have enough mana!");
         }
+    }
+
+    @Override
+    public void shoot(ItemStack itemStack, Entity projectile, Player player) {
+
+    }
+
+    @Override
+    public void eat(ItemStack itemStack, Player player) {
+
+    }
+
+    @Override
+    public void attack(ItemStack itemStack, Player player, Entity target) {
+
+    }
+
+    @Override
+    public void crouch(ItemStack itemStack, Player player) {
+
     }
 }

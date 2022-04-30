@@ -2,7 +2,6 @@ package lmaxplay.customitems.items;
 
 import lmaxplay.customitems.CustomItem;
 import lmaxplay.customitems.ItemType;
-import lmaxplay.customitems.Mana;
 import lmaxplay.customitems.Rarity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -17,31 +16,30 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-public class BoneSwordRefined implements CustomItem {
-
+public class DragonWings implements CustomItem {
     @Override
     public String getName() {
-        return "§6Refined Bone Sword";
+        return "§8Dragon Wings";
     }
 
     @Override
     public List<String> getLore() {
         String[] lore = new String[] {
-                "§7A sword made of bones,",
-                "§7refined to an incredible level.",
-                "§6§lLEGENDARY WEAPON"
+                "§7Forged from the scales of a newborn dragon",
+                "§7The wings of this legendary item are said to",
+                "§7have the power to fly at the speed of light",
+                "§6§lLEGENDARY ELYTRA"
         };
         return Arrays.asList(lore);
     }
 
     @Override
     public String getId() {
-        return "BONE_SWORD_REFINED";
+        return "DRAGON_WINGS";
     }
 
     @Override
-    @NotNull
-    public Boolean hasAbility() {
+    public @NotNull Boolean hasAbility() {
         return true;
     }
 
@@ -52,27 +50,23 @@ public class BoneSwordRefined implements CustomItem {
 
     @Override
     public ItemType getType() {
-        return ItemType.Weapon;
+        return ItemType.Elytra;
     }
 
     @Override
     public ItemStack createItemStack() {
-        ItemStack itemStack = new ItemStack(org.bukkit.Material.BONE);
+        ItemStack itemStack = new ItemStack(org.bukkit.Material.ELYTRA);
         ItemMeta meta = itemStack.getItemMeta();
         assert meta != null;
         meta.setDisplayName(getName());
         meta.setLore(getLore());
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 16.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         itemStack.setItemMeta(meta);
         return itemStack;
     }
 
     @Override
     public void use(ItemStack itemStack, Player player) {
-        // 30 mana cost
-        if(Mana.getMana(player) >= 30) {
-            Mana.removeMana(player, 30);
-        }
+
     }
 
     @Override
@@ -94,4 +88,5 @@ public class BoneSwordRefined implements CustomItem {
     public void crouch(ItemStack itemStack, Player player) {
 
     }
+
 }
