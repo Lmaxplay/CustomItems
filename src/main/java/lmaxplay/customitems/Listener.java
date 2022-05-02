@@ -39,6 +39,8 @@ public class Listener implements org.bukkit.event.Listener {
                             event.setCancelled(true);
                         } else if (flags.contains(ItemFlags.FIRE_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
                             event.setCancelled(true);
+                        } else if (flags.contains(ItemFlags.FIRE_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.LAVA) {
+                            event.setCancelled(true);
                         } else if (flags.contains(ItemFlags.EXPLOSION_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
                             event.setCancelled(true);
                         } else if (flags.contains(ItemFlags.EXPLOSION_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {

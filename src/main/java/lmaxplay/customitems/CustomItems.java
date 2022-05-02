@@ -35,6 +35,10 @@ public final class CustomItems extends JavaPlugin {
         ItemManager.register(new ManaBow());
         ItemManager.register(new ObsidianPickaxe());
         ItemManager.register(new DragonWings());
+        ItemManager.register(new ObsidianHelmet());
+        ItemManager.register(new ObsidianChestplate());
+        ItemManager.register(new ObsidianLeggings());
+        ItemManager.register(new ObsidianBoots());
     }
 
     @Override

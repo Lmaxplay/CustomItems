@@ -13,58 +13,56 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-public class DragonWings implements CustomItem {
+public class ObsidianHelmet implements CustomItem {
     @Override
     public String getName() {
-        return "§6Dragon Wings";
+        return "§9Obsidian Helmet";
     }
 
     @Override
     public List<String> getLore() {
         String[] lore = new String[] {
-                "§7Forged from the scales of a newborn dragon",
-                "§7The wings of this legendary item are said to",
-                "§7have the power to fly at the speed of light",
-                "§7Ability: §6Launch",
-                "§7Launches you in the direction you are looking",
-                "§7Cost: §65 mana",
-                "§6§lLEGENDARY ELYTRA"
+                "§7Forged from refined enchanted obsidian",
+                "§7Ability: §6Fireproof",
+                "§7Makes you immune to fire damage",
+                "§9§lRARE HELMET"
         };
         return Arrays.asList(lore);
     }
 
     @Override
     public String getId() {
-        return "DRAGON_WINGS";
+        return "OBSIDIAN_HELMET";
     }
 
     @Override
     public @NotNull Boolean hasAbility() {
-        return true;
+        return false;
     }
 
     @Override
     public Rarity getRarity() {
-        return Rarity.Legendary;
+        return Rarity.Rare;
     }
 
     @Override
     public ItemType getType() {
-        return ItemType.Elytra;
+        return ItemType.Helmet;
     }
 
     @Override
     public ItemStack createItemStack() {
-        ItemStack itemStack = new ItemStack(org.bukkit.Material.ELYTRA);
+        ItemStack itemStack = new ItemStack(org.bukkit.Material.NETHERITE_HELMET);
         ItemMeta meta = itemStack.getItemMeta();
         assert meta != null;
         meta.setDisplayName(getName());
         meta.setLore(getLore());
-        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
-        meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 4, true);
-        meta.addEnchant(Enchantment.PROTECTION_FALL, 4, true);
-        meta.addEnchant(Enchantment.PROTECTION_FIRE, 4, true);
-        meta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 4, true);
+        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5, true);
+        meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 5, true);
+        meta.addEnchant(Enchantment.PROTECTION_FIRE, 5, true);
+        meta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 5, true);
+        meta.addEnchant(Enchantment.OXYGEN, 5, true);
+        meta.addEnchant(Enchantment.WATER_WORKER, 5, true);
         meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
         itemStack.setItemMeta(meta);
         return itemStack;
@@ -92,24 +90,13 @@ public class DragonWings implements CustomItem {
 
     @Override
     public void crouch(ItemStack itemStack, Player player) {
-        if(Mana.getMana(player) > 5) {
-            Location loc = player.getLocation();
-            Vector dir = loc.getDirection();
-            dir.normalize();
-            dir.multiply(5); //5 blocks a way
-            loc.add(dir);
-            player.setVelocity(player.getEyeLocation().getDirection().multiply(3));
-            Mana.removeMana(player, 5);
-        } else {
-            player.sendMessage(CustomItemStrings.notEnoughMana);
-        }
+
     }
 
     @Override
     public List<ItemFlags> getFlags() {
         ItemFlags[] flags = new ItemFlags[] {
-                ItemFlags.FALL_IMMUNITY,
-                ItemFlags.WALL_IMMUNITY
+                ItemFlags.FIRE_IMMUNITY
         };
         return Arrays.asList(flags);
     }
