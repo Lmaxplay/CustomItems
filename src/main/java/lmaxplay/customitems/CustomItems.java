@@ -1,7 +1,6 @@
 package lmaxplay.customitems;
 
 import lmaxplay.customitems.commands.ItemGiveCommand;
-import lmaxplay.customitems.helpers.ItemDrops;
 import lmaxplay.customitems.items.*;
 import org.bukkit.plugin.java.JavaPlugin;
 

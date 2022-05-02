@@ -1,20 +1,17 @@
 package lmaxplay.customitems.items;
 
-import lmaxplay.customitems.CustomItem;
-import lmaxplay.customitems.ItemType;
-import lmaxplay.customitems.Rarity;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
+import lmaxplay.customitems.*;
+import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class DragonWings implements CustomItem {
     @Override
@@ -28,6 +25,9 @@ public class DragonWings implements CustomItem {
                 "§7Forged from the scales of a newborn dragon",
                 "§7The wings of this legendary item are said to",
                 "§7have the power to fly at the speed of light",
+                "§7Ability: §6Launch",
+                "§7Launches you in the direction you are looking",
+                "§7Cost: §65 mana",
                 "§6§lLEGENDARY ELYTRA"
         };
         return Arrays.asList(lore);
@@ -60,6 +60,12 @@ public class DragonWings implements CustomItem {
         assert meta != null;
         meta.setDisplayName(getName());
         meta.setLore(getLore());
+        meta.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
+        meta.addEnchant(Enchantment.PROTECTION_EXPLOSIONS, 4, true);
+        meta.addEnchant(Enchantment.PROTECTION_FALL, 4, true);
+        meta.addEnchant(Enchantment.PROTECTION_FIRE, 4, true);
+        meta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 4, true);
+        // meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
         itemStack.setItemMeta(meta);
         return itemStack;
     }
@@ -86,7 +92,26 @@ public class DragonWings implements CustomItem {
 
     @Override
     public void crouch(ItemStack itemStack, Player player) {
+        if(Mana.getMana(player) > 5) {
+            Location loc = player.getLocation();
+            Vector dir = loc.getDirection();
+            dir.normalize();
+            dir.multiply(5); //5 blocks a way
+            loc.add(dir);
+            player.setVelocity(player.getEyeLocation().getDirection().multiply(3));
+            Mana.removeMana(player, 5);
+        } else {
+            player.sendMessage(CustomItemStrings.notEnoughMana);
+        }
+    }
 
+    @Override
+    public List<ItemFlags> getFlags() {
+        ItemFlags[] flags = new ItemFlags[] {
+                ItemFlags.FALL_IMMUNITY,
+                ItemFlags.WALL_IMMUNITY
+        };
+        return Arrays.asList(flags);
     }
 
 }

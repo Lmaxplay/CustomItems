@@ -3,7 +3,8 @@ package lmaxplay.customitems.items;
 import lmaxplay.customitems.ItemType;
 import lmaxplay.customitems.Mana;
 import lmaxplay.customitems.Rarity;
-import org.bukkit.ChatColor;
+import lmaxplay.customitems.CustomItemStrings;
+import lmaxplay.customitems.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-public class LaunchWand implements lmaxplay.customitems.CustomItem {
+public class LaunchWand implements CustomItem {
 
     @Override
     public String getName() {
@@ -25,6 +26,7 @@ public class LaunchWand implements lmaxplay.customitems.CustomItem {
     @Override
     public List<String> getLore() {
         String[] lore = new String[] {
+                "§7Ability: §6Launch",
                 "§7Right click to launch yourself",
                 "§7in the direction you are looking",
                 "§7in.",
@@ -77,7 +79,7 @@ public class LaunchWand implements lmaxplay.customitems.CustomItem {
             player.setVelocity(player.getEyeLocation().getDirection().multiply(3));
             Mana.removeMana(player, 10);
         } else {
-            player.sendMessage(ChatColor.RED + "You do not have enough mana!");
+            player.sendMessage(CustomItemStrings.notEnoughMana);
         }
     }
 
@@ -99,5 +101,10 @@ public class LaunchWand implements lmaxplay.customitems.CustomItem {
     @Override
     public void crouch(ItemStack itemStack, Player player) {
 
+    }
+
+    @Override
+    public List<ItemFlags> getFlags() {
+        return null;
     }
 }

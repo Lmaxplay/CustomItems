@@ -5,19 +5,18 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.bukkit.Bukkit.spigot;
-
 public class TickLoop implements Runnable {
     public void run() {
         // add a rarity to every player's inventory
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setHealth(Math.min(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(), player.getHealth() + (Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue() / 400)));
+            if(player.getHealth() > 0) {
+                player.setHealth(Math.min(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(), player.getHealth() + (Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue() / 400)));
+            }
             for (ItemStack item : player.getInventory().getContents()) {
                 if (item != null) {
                     // Make every item in the player's inventory be unbreakable

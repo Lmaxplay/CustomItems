@@ -1,6 +1,5 @@
 package lmaxplay.customitems;
 
-import lmaxplay.customitems.helpers.ItemDrops;
 import org.bukkit.event.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -11,9 +10,9 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.*;
 
 import com.destroystokyo.paper.event.player.*;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-import java.util.logging.Level;
 
 public class Listener implements org.bukkit.event.Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -24,7 +23,31 @@ public class Listener implements org.bukkit.event.Listener {
         LivingEntity entity = (LivingEntity) event.getEntity();
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-       }
+            for (ItemStack item : player.getInventory().getArmorContents()) {
+                if (item == null) continue;
+                ItemMeta meta = item.getItemMeta();
+                if (meta == null) continue;
+                CustomItem customItem = ItemManager.getItem(meta.getDisplayName());
+                if (customItem != null) {
+                    List<ItemFlags> flags = customItem.getFlags();
+                    if (flags != null) {
+                        if (flags.contains(ItemFlags.FALL_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                            event.setCancelled(true);
+                        } else if (flags.contains(ItemFlags.WALL_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.FLY_INTO_WALL) {
+                            event.setCancelled(true);
+                        } else if (flags.contains(ItemFlags.FIRE_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
+                            event.setCancelled(true);
+                        } else if (flags.contains(ItemFlags.FIRE_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
+                            event.setCancelled(true);
+                        } else if (flags.contains(ItemFlags.EXPLOSION_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
+                            event.setCancelled(true);
+                        } else if (flags.contains(ItemFlags.EXPLOSION_IMMUNITY) && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+            }
+        }
     }
     // On entity damage by entity event
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -184,18 +207,13 @@ public class Listener implements org.bukkit.event.Listener {
             event.setCancelled(false);
         }
     }
-    // Entity death
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onEntityDeath(EntityDeathEvent event) {
-        if(event.getEntity() instanceof Player) return;
-        ItemDrops.drop(event.getEntity().getType(), event);
-    }
 
     // On player crouch
     @EventHandler
     public void onPlayerCrouch(PlayerToggleSneakEvent event) {
         if(event.getPlayer().isSneaking()) {
             for (ItemStack item : event.getPlayer().getInventory().getArmorContents()) {
+                if(item == null) continue;
                 CustomItem customItem = ItemManager.getItem(item.getItemMeta().getDisplayName());
                 if (customItem != null) {
                     if (customItem.hasAbility()) {
@@ -205,4 +223,5 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
     }
+
 }

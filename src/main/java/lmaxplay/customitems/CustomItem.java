@@ -68,4 +68,9 @@ public interface CustomItem {
      * On item crouch
      */
     void crouch(ItemStack itemStack, Player player);
+
+    /**
+     * Gets the item flags
+     */
+    List<ItemFlags> getFlags();
 }

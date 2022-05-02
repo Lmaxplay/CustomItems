@@ -3,8 +3,6 @@ package lmaxplay.customitems.helpers;
 import lmaxplay.customitems.CustomItem;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
 public class Drop {
     private CustomItem item;
     private int min;

@@ -1,9 +1,6 @@
 package lmaxplay.customitems.helpers;
 
-import lmaxplay.customitems.CustomItem;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 

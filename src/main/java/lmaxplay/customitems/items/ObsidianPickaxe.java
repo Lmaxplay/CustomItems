@@ -2,13 +2,11 @@ package lmaxplay.customitems.items;
 
 import lmaxplay.customitems.*;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -94,6 +92,11 @@ public class ObsidianPickaxe implements CustomItem {
     @Override
     public void crouch(ItemStack itemStack, Player player) {
 
+    }
+
+    @Override
+    public List<ItemFlags> getFlags() {
+        return null;
     }
 
 

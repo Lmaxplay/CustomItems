@@ -1,7 +1,8 @@
 package lmaxplay.customitems.items;
 
-import lmaxplay.customitems.CustomItem;
+import lmaxplay.customitems.ItemFlags;
 import lmaxplay.customitems.ItemType;
+import lmaxplay.customitems.CustomItem;
 import lmaxplay.customitems.Rarity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -87,5 +88,10 @@ public class BoneSword implements CustomItem {
     @Override
     public void crouch(ItemStack itemStack, Player player) {
 
+    }
+
+    @Override
+    public List<ItemFlags> getFlags() {
+        return null;
     }
 }
